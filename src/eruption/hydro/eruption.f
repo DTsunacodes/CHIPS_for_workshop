@@ -267,7 +267,8 @@ c     stop when timestep becomes too small (currently conservative)
          stop' due to too low time step'
       end if
 
-      if(dt.gt.1000.d0)dt = 1000.d0
+c      if(dt.gt.1000.d0)dt = 1000.d0
+      if(dt.gt.10000.d0)dt = 10000.d0
 
       call state(n,dt,psl,psr,usl,usr)
 
