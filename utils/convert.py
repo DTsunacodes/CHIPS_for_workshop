@@ -140,10 +140,10 @@ def convertForEruption(inputFile, outputFile, massCutPoint, discriminant, hydroN
 		    originalX[13][i] = lowerLimX
 		    missing_elem.append('cr48') if 'cr48' not in missing_elem else None
 		try:
-		    originalX[14][i] = h.cr56[originalSize - i - 1]
+		    originalX[14][i] = h.cr60[originalSize - i - 1]
 		except AttributeError:
 		    originalX[14][i] = lowerLimX
-		    missing_elem.append('cr56') if 'cr56' not in missing_elem else None
+		    missing_elem.append('cr60') if 'cr60' not in missing_elem else None
 		try:
 		    originalX[15][i] = h.fe52[originalSize - i - 1]
 		except AttributeError:
@@ -171,7 +171,7 @@ def convertForEruption(inputFile, outputFile, massCutPoint, discriminant, hydroN
 	########################### debug part ###########################
 	with open(path, mode = 'w') as f:
 	#	f.write('j =' + str(originalSize) + '\n')
-	#	f.write('zone m_r(Msun) m_r(g)  dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr56 fe52 fe54 fe56 ni56\n')
+	#	f.write('zone m_r(Msun) m_r(g)  dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr60 fe52 fe54 fe56 ni56\n')
 		for i in range(0, originalSize):
 			f.write(str(i + 1) + ' ' + str(originalMr[i]) + ' ' + str(originalMrCgs[i]) + ' ' + str(originalDmass[i]) + ' ' + str(originalRadius[i]) + ' ' + str(originalDensity[i]) + ' ' + str(originalPressure[i]) + ' ' + str(originalTemperature[i]))
 			for j in range(0,elemNum):
@@ -222,7 +222,7 @@ def convertForEruption(inputFile, outputFile, massCutPoint, discriminant, hydroN
 	########################### debug part ###########################
 	with open(path, mode = 'w') as f:
 	#	f.write('j =' + str(originalSize) + '\n')
-	#	f.write('zone m_r(Msun) m_r(g)  dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr56 fe52 fe54 fe56 ni56\n')
+	#	f.write('zone m_r(Msun) m_r(g)  dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr60 fe52 fe54 fe56 ni56\n')
 		for i in range(0, originalSize - cellCut):
 			f.write(str(i + 1 + cellCut) + ' ' + str(cuttedMr[i]) + ' ' + str(cuttedMrCgs[i]) + ' ' + str(cuttedDmass[i]) + ' ' + str(cuttedRadius[i]) + ' ' + str(cuttedDensity[i]) + ' ' + str(cuttedPressure[i]) + ' ' + str(cuttedTemperature[i]))
 			for j in range(0,elemNum):
@@ -327,7 +327,7 @@ def convertForEruption(inputFile, outputFile, massCutPoint, discriminant, hydroN
 	# output
 	with open(path, mode = 'w') as f:
 		f.write(str(size) + '\n')
-		f.write('j m_r(Msun) m_r(g) dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr56 fe52 fe54 fe56 ni56\n')
+		f.write('j m_r(Msun) m_r(g) dmass(g) radius(cm) density(g/cm^3) pressure(erg/cm^3) temperature(K) h1 he3 he4 c12 n14 o16 ne20 mg24 si28 s32 ar36 ca40 ti44 cr48 cr60 fe52 fe54 fe56 ni56\n')
 		for i in range(0, size):
 			f.write(str(i + 1) + ' ' + str(mrCgs[i]/MSUN) + ' ' + str(mrCgs[i]) + ' ' + str(dmass[i]) + ' ' + str(radius[i]) + ' ' + str(density[i]) + ' ' + str(pressure[i]) + ' ' + str(temperature[i]))
 			for j in range(0,elemNum):
