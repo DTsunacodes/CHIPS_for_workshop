@@ -134,9 +134,10 @@ cexpl  construct the initial model
       pn = 0
 
       call grav(n,encmg)
+      write(*,*)"tmns encm(3) in grav =",tmns, encm(3)
 
       l = max(1,1-istart)
-      print *,e(3)
+c      print *,e(3)
       call tote(n,nadd,e,dmass,rad,grv,u,te,tet)
 
 
@@ -190,8 +191,8 @@ cexpl  start the hydrodynamical calculation
  95   write(*,*)'calculation starts here'
       ihyd = istart
       do while(time.le.tp(ntp))
-      print *,time,ihyd,dt
-      write(*,*)"fixedCell=",fixedCell
+c      print *,time,ihyd,dt
+c      write(*,*)"fixedCell=",fixedCell
 
 
       if(EjectaOnly)then
@@ -274,9 +275,9 @@ c     stop when timestep becomes too small (currently conservative)
       call riemnt( n,ihyd,gl,gr,g1l,g1r,psl,psr,taup,taum,usl,
      *   usr,pn)
 
-      write(*,*)"before advanc"
+c      write(*,*)"before advanc"
       call tote(n,nadd,e,dmass,rad,grv,u,te,tet)
-      write(*,*)"e_tot eu_tot",te,tet
+c      write(*,*)"e_tot eu_tot",te,tet
 
       innerCell = 3
       if(ejectaCut.eq.1)then
@@ -286,7 +287,7 @@ c     stop when timestep becomes too small (currently conservative)
      $                e_charge_tot,injection_time,innerCell)
 
       time = time + dt
-      write(*,*)"timetocc=",time_to_cc
+c      write(*,*)"timetocc=",time_to_cc
 
 
       do jj = 3,n
@@ -366,26 +367,45 @@ c     stop when timestep becomes too small (currently conservative)
       if(ihyd.ge.0)then
 
          call tote(n,nadd,e,dmass,rad,grv,u,te,tet)
-         write(*,'(''total energy ='',1pe12.4,''erg, etherm =''
-     $        ,e12.4,'' erg'')')te, tet
-         write(*,
+         if (MOD(ihyd, 100) .eq. 0) then
+           write(*,*) "----------------------------------------------"
+           write(*,
      $        '(8h time = ,1pe12.4,4h sec,6h dt = ,e12.4,4h sec,
-     $        6h ihyd ,i8)')
+     $        6h step ,i8)')
      $        time, dt, ihyd
-         if(ejectaCut.eq.0)then
-           write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
-     $        9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
-     $        9h    L   ,/,(i5,1p8e9.2))')
-     $        (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
-     $        ,temp(j),lum(j),j=max(1,jw-10),max(10,min(jw+10,n)))
-         end if
-         if(ejectaCut.eq.1)then
-           write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
-     $        9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
-     $        9h    u   ,/,(i5,1p8e9.2))')
-     $        (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
-     $        ,temp(j),u(j),
-     $        j=max(fixedCell,jw-10),max(20+fixedCell,min(jw+10,n)))
+           write(*,'(''total energy ='',1pe12.4,''erg, etherm =''
+     $        ,e12.4,'' erg'')')te, tet
+
+           ! show first 5 cells and last 5 cells
+           if(ejectaCut.eq.0)then
+             write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
+     $          9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
+     $          9h    L   ,/,(i5,1p8e9.2))')
+     $          (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
+     $          ,temp(j),lum(j),j=max(3,jw-10),max(10,min(jw+10,n)))
+             write(*,*) "------------------------"
+             write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
+     $          9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
+     $          9h    L   ,/,(i5,1p8e9.2))')
+     $          (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
+     $          ,temp(j),lum(j),j=n-4,n)
+           end if
+
+           ! after cutting innermost region at late times
+           if(ejectaCut.eq.1)then
+             write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
+     $          9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
+     $          9h    u   ,/,(i5,1p8e9.2))')
+     $          (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
+     $          ,temp(j),u(j),
+     $          j=max(fixedCell,jw-10),max(10+fixedCell,min(jw+10,n)))
+             write(*,*) "------------------------"
+             write(*,'(5h no.  ,8h  mr    ,9hradius   9hdensity  ,
+     $          9hpressure ,9hvelocity ,9h     e   ,9h temp    ,
+     $          9h    u   ,/,(i5,1p8e9.2))')
+     $          (j,encm(j)/msol,rad(j),1.d0/tau(j),ps(j),us(j),e(j)
+     $          ,temp(j),u(j),j=n-4,n)
+           end if
          end if
 
       endif

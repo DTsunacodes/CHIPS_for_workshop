@@ -122,7 +122,7 @@ if not options.skip_eruption:
 		print('cell number and/or opacity table shape has changed. recompiling the code...')
 		subprocess.call(["make", "clean"])
 		subprocess.call("make")
-	subprocess.call("./eruption", stdout=open(os.devnull,'wb'))
+	subprocess.call("./eruption")
 
 
 #################################################################
