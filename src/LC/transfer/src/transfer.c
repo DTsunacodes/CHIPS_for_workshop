@@ -432,6 +432,7 @@ E_old[n] must keep values of E[2*i+1] before iteration, so that error is estimat
 		}
 		else{
 			r_eff = r_ini;
+			v_eff = u_ini;
 		}
 /********************************************************************/
 
