@@ -28,7 +28,7 @@ void init_E_U(double, double, double[], double[], double[], double[], double[], 
 void rad_transfer_csm(double Eej, double Mej, double Mni, double nej, double delta, double r_out, double s, 
 	const char *file_csm, const char *file_inp, const char *file_outp, const char *file_outp_band, const char *dir_shockprofiles)
 {
-	FILE *fp, *fl, *fnu_time;
+	FILE *fp, *fl, *fnu_time=tmpfile();
 	double F_max = 0., F_out = 0.;
 	double r_eff, v_eff, T_color;
 	double E[2*NSIZE], U[2*NSIZE], r[NSIZE+1], rho[NSIZE], v_w[NSIZE], E0[NSIZE], U0[NSIZE];
