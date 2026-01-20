@@ -161,7 +161,7 @@
             kk = kk + 1
             if(kk.gt.100)then
                 open(81,file='EruptionFiles/eos_Report.d', access='append')
-                write(81,*),k,time,"iter does not converge"
+                write(81,*) k,time,"iter does not converge"
                 close(81)
                 exit
             end if

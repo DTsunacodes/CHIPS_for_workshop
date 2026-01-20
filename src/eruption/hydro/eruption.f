@@ -123,7 +123,7 @@ cexpl  construct the initial model
       endif
       write(*,*)"********* OUTPUT TIME ***********"
       do jj = 1, 99
-        write(*,*),jj,when_out(jj)
+        write(*,*) jj,when_out(jj)
       end do
 
       boundr = (rad(3)+rad(4))/2.d0
@@ -335,7 +335,7 @@ c      write(*,*)"timetocc=",time_to_cc
      $P[erg/cc] t=",time
         do jj = output_init, n
            write(98,'(i0, e18.10, e18.10, e18.10,
-     $                   e18.10, e18.10, e18.10, e18.10)'),jj,
+     $                   e18.10, e18.10, e18.10, e18.10)') jj,
      $encm(jj)-encm(output_init-1),rad(jj),u(jj),
      $1.d0/tau(jj),x(jj,1),x(jj,3),p(jj)
         end do
@@ -356,7 +356,7 @@ c      write(*,*)"timetocc=",time_to_cc
         endif
         do jj = output_init, n
            write(98,'(i0, e18.10, e18.10, e18.10,
-     $                   e18.10, e18.10, e18.10, e18.10)'),jj,
+     $                   e18.10, e18.10, e18.10, e18.10)') jj,
      $encm(jj)-encm(output_init-1),rad(jj),u(jj),
      $1.d0/tau(jj),x(jj,1),x(jj,3),p(jj)
         end do
