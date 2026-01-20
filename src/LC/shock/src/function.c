@@ -359,7 +359,7 @@ double sigma_saha(double R, double T)
 	double rho = R*pow(T*1.e-06, 3.);
 	double mu_tmp[2] = {};
 	double x;
-	double n_e, n_H, n_He, n_HI, n_HII, n_HeI, n_HeII, n_HeIII;
+	double n_e, n_H, n_He, n_HII, n_HeI, n_HeII, n_HeIII;
 	mu_tmp[0] = 0.5;
 	mu_tmp[1] = 1.;
 	while(fabs(mu_tmp[1]-mu_tmp[0]) > 1.e-15){
@@ -369,7 +369,7 @@ double sigma_saha(double R, double T)
 		n_He = Y/4.*rho/MH;
 		n_e = rho/(mu_tmp[0]*MH)-(X+Y/4.)*rho/MH;
 		n_HII = pow(x, 1.5)*exp(-CHI_HI/(P_K*T))/(n_e+pow(x, 1.5)*exp(-CHI_HI/(P_K*T)))*n_H;
-		n_HI = n_H-n_HII;
+		//n_HI = n_H-n_HII;
 		n_HeI = pow(1.+4./n_e*pow(x, 1.5)*exp(-CHI_HeI/(P_K*T))+4./(n_e*n_e)*pow(x, 3.)*exp(-(CHI_HeI+CHI_HeII)/(P_K*T)), -1.)*n_He;
 		n_HeII = 4.*n_HeI/n_e*pow(x, 1.5)*exp(-CHI_HeI/(P_K*T));
 		n_HeIII = n_HeII/n_e*pow(x, 1.5)*exp(-CHI_HeII/(P_K*T));
@@ -385,7 +385,7 @@ void sigma_mu_saha(double R, double T, double *sigma, double *mu)
 	double rho = R*pow(T*1.e-06, 3.);
 	double mu_tmp[2] = {};
 	double x;
-	double n_e, n_H, n_He, n_HI, n_HII, n_HeI, n_HeII, n_HeIII;
+	double n_e, n_H, n_He, n_HII, n_HeI, n_HeII, n_HeIII;
 	mu_tmp[0] = 0.5;
 	mu_tmp[1] = 1.;
 	while(fabs(mu_tmp[1]-mu_tmp[0]) > 1.e-15){
@@ -395,7 +395,7 @@ void sigma_mu_saha(double R, double T, double *sigma, double *mu)
 		n_He = Y/4.*rho/MH;
 		n_e = rho/(mu_tmp[0]*MH)-(X+Y/4.)*rho/MH;
 		n_HII = pow(x, 1.5)*exp(-CHI_HI/(P_K*T))/(n_e+pow(x, 1.5)*exp(-CHI_HI/(P_K*T)))*n_H;
-		n_HI = n_H-n_HII;
+		//n_HI = n_H-n_HII;
 		n_HeI = pow(1.+4./n_e*pow(x, 1.5)*exp(-CHI_HeI/(P_K*T))+4./(n_e*n_e)*pow(x, 3.)*exp(-(CHI_HeI+CHI_HeII)/(P_K*T)), -1.)*n_He;
 		n_HeII = 4.*n_HeI/n_e*pow(x, 1.5)*exp(-CHI_HeI/(P_K*T));
 		n_HeIII = n_HeII/n_e*pow(x, 1.5)*exp(-CHI_HeII/(P_K*T));
