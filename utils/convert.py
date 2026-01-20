@@ -347,14 +347,14 @@ def setEruptionParam(timeToCC, injectDuration, injectEnergyFraction, discriminan
 	else:
 		flag2 = 0
 	if OpacityTable is not None:
-		flag3 = 1
+		flag3 = 1 # load and use opacity table
 		table = np.genfromtxt(OpacityTable)
 		nrow = table.shape[0] - 1 # minus row of logR
 		ncol = table.shape[1] - 1 # minus column of logT
 	else:
-		flag3 = 0
-		nrow = 0
-		ncol = 0
+		flag3 = 0 # use analytical formula (Kuriyama & Shigeyama 20)
+		nrow = 1 # ignored -- table is not used anyway
+		ncol = 1 # ignored -- table is not used anyway
 	# extract original parameters in inclmn.f
 	with open('src/eruption/hydro/inclmn.f', mode = 'r') as f:
 		next(f)
