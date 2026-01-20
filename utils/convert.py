@@ -1,5 +1,6 @@
 # include package
 import math
+import os
 import sys
 import gc
 import re
@@ -120,50 +121,50 @@ def convertForEruption(inputFile, outputFile, massCutPoint, discriminant, hydroN
 		originalX[8][i] = h.si28[originalSize - i - 1]
 		originalX[9][i] = h.s32[originalSize - i - 1]
 		try:
-		    originalX[10][i] = h.ar36[originalSize - i - 1]
+			originalX[10][i] = h.ar36[originalSize - i - 1]
 		except AttributeError:
-		    originalX[10][i] = lowerLimX
-		    missing_elem.append('ar36') if 'ar36' not in missing_elem else None
+			originalX[10][i] = lowerLimX
+			missing_elem.append('ar36') if 'ar36' not in missing_elem else None
 		try:
-		    originalX[11][i] = h.ca40[originalSize - i - 1]
+			originalX[11][i] = h.ca40[originalSize - i - 1]
 		except AttributeError:
-		    originalX[11][i] = lowerLimX
-		    missing_elem.append('ca40') if 'ca40' not in missing_elem else None
+			originalX[11][i] = lowerLimX
+			missing_elem.append('ca40') if 'ca40' not in missing_elem else None
 		try:
-		    originalX[12][i] = h.ti44[originalSize - i - 1]
+			originalX[12][i] = h.ti44[originalSize - i - 1]
 		except AttributeError:
-		    originalX[12][i] = lowerLimX
-		    missing_elem.append('ti44') if 'ti44' not in missing_elem else None
+			originalX[12][i] = lowerLimX
+			missing_elem.append('ti44') if 'ti44' not in missing_elem else None
 		try:
-		    originalX[13][i] = h.cr48[originalSize - i - 1]
+			originalX[13][i] = h.cr48[originalSize - i - 1]
 		except AttributeError:
-		    originalX[13][i] = lowerLimX
-		    missing_elem.append('cr48') if 'cr48' not in missing_elem else None
+			originalX[13][i] = lowerLimX
+			missing_elem.append('cr48') if 'cr48' not in missing_elem else None
 		try:
-		    originalX[14][i] = h.cr60[originalSize - i - 1]
+			originalX[14][i] = h.cr60[originalSize - i - 1]
 		except AttributeError:
-		    originalX[14][i] = lowerLimX
-		    missing_elem.append('cr60') if 'cr60' not in missing_elem else None
+			originalX[14][i] = lowerLimX
+			missing_elem.append('cr60') if 'cr60' not in missing_elem else None
 		try:
-		    originalX[15][i] = h.fe52[originalSize - i - 1]
+			originalX[15][i] = h.fe52[originalSize - i - 1]
 		except AttributeError:
-		    originalX[15][i] = lowerLimX
-		    missing_elem.append('fe52') if 'fe52' not in missing_elem else None
+			originalX[15][i] = lowerLimX
+			missing_elem.append('fe52') if 'fe52' not in missing_elem else None
 		try:
-		    originalX[16][i] = h.fe54[originalSize - i - 1]
+			originalX[16][i] = h.fe54[originalSize - i - 1]
 		except AttributeError:
-		    originalX[16][i] = lowerLimX
-		    missing_elem.append('fe54') if 'fe54' not in missing_elem else None
+			originalX[16][i] = lowerLimX
+			missing_elem.append('fe54') if 'fe54' not in missing_elem else None
 		try:
-		    originalX[17][i] = h.fe56[originalSize - i - 1]
+			originalX[17][i] = h.fe56[originalSize - i - 1]
 		except AttributeError:
-		    originalX[17][i] = lowerLimX
-		    missing_elem.append('fe56') if 'fe56' not in missing_elem else None
+			originalX[17][i] = lowerLimX
+			missing_elem.append('fe56') if 'fe56' not in missing_elem else None
 		try:
-		    originalX[18][i] = h.ni56[originalSize - i - 1]
+			originalX[18][i] = h.ni56[originalSize - i - 1]
 		except AttributeError:
-		    originalX[18][i] = lowerLimX
-		    missing_elem.append('ni56') if 'ni56' not in missing_elem else None
+			originalX[18][i] = lowerLimX
+			missing_elem.append('ni56') if 'ni56' not in missing_elem else None
 
 	if len(missing_elem) > 0:
 		print('Warning: Attribute %s is not found and thus ignored...' % ', '.join(missing_elem))
@@ -355,22 +356,25 @@ def setEruptionParam(timeToCC, injectDuration, injectEnergyFraction, discriminan
 		flag3 = 0 # use analytical formula (Kuriyama & Shigeyama 20)
 		nrow = 1 # ignored -- table is not used anyway
 		ncol = 1 # ignored -- table is not used anyway
-	# extract original parameters in inclmn.f
-	with open('src/eruption/hydro/inclmn.f', mode = 'r') as f:
-		next(f)
-		text = f.readline()
-	pattern = r"(mn|nelem|nrow|ncol) = (\d+)"
-	matches = re.findall(pattern, text)
-	param_dict = {k: int(v) for k, v in matches}
-	# check if any of the parameters have changed, if so we need to recompile the inclmn.f
-	# 'nelem' is fixed to 19 in the code
-	params_changed = (param_dict != {'mn': hydroNumMesh+10, 'nelem': 19, 'nrow': nrow, 'ncol': ncol})
+	# if inclmn.f exists, check whether it has changed
+	if os.path.exists('src/eruption/hydro/inclmn.f'):
+		with open('src/eruption/hydro/inclmn.f', mode = 'r') as f:
+			next(f)
+			text = f.readline()
+		pattern = r"(mn|nelem|nrow|ncol) = (\d+)"
+		matches = re.findall(pattern, text)
+		param_dict = {k: int(v) for k, v in matches}
+		# check if any of the parameters have changed, if so we need to recompile the inclmn.f
+		# 'nelem' is fixed to 19 in the code
+		params_changed = (param_dict != {'mn': hydroNumMesh+10, 'nelem': 19, 'nrow': nrow, 'ncol': ncol})
+	else:
+		params_changed = True
 
 	# update input files
-	with open('src/eruption/hydro/inclmn.f', mode = 'w') as f:
-		f.write('      integer mn, nelem, nrow, ncol\n')
-		f.write('      parameter ( mn = '+str(hydroNumMesh+ 10)+', nelem = 19, nrow = %d, ncol = %d )\n' % (nrow, ncol))
-	with open('src/eruption/hydro/eruptPara.d', mode = 'w') as f2:
+	with open('src/eruption/hydro/inclmn.f', mode = 'w+') as f:
+		f.write('	  integer mn, nelem, nrow, ncol\n')
+		f.write('	  parameter ( mn = '+str(hydroNumMesh+ 10)+', nelem = 19, nrow = %d, ncol = %d )\n' % (nrow, ncol))
+	with open('src/eruption/hydro/eruptPara.d', mode = 'w+') as f2:
 		f2.write('TimeToCC InjectEnergy InjectDuration ScaledByEnvelopeEnergy InjectEnergyFraction continueTransfer useOpacityTable OpacityTable discriminant\n')
 		f2.write(str(timeToCC*86400*365.25) + ' ' +  str(injectEnergy) + ' ' +  str(injectDuration) + ' ' + str(flag) + ' ' + str(injectEnergyFraction) + ' ' + str(flag2) + ' ' + str(flag3) + ' ' + '"{}"'.format(OpacityTable) + ' ' + str(discriminant) + '\n')
 
