@@ -120,6 +120,7 @@ double set_r_diff(const char *file_csm)
 	double n, s, delta, M_ej, E_ej, kappa, q;
 	double A, g_to_n;
 	double v_sh;
+	double result;
 	double *rho, *r, *dr, *tau, tau_tot = 0.;
 	int i = 0, j;
 
@@ -159,12 +160,14 @@ double set_r_diff(const char *file_csm)
 		}
 	}
 
+	result = r[j];
+
 	free(rho);
 	free(tau);
 	free(r);
 	free(dr);
 	fclose(fp);
-	return r[j];
+	return result;
 }
 
 double rho_ej(double r, double t)
