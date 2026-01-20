@@ -106,7 +106,12 @@ double set_r_ini(const char *file_csm)
 		printf("reading CSM density profile failed..\n");
 		exit(EXIT_FAILURE);
 	}
-	fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &dummy[2], &dummy[3], &dummy[4], &dummy[5], &dummy[6]);
+	// fscanf returns > 0: read successfully
+	// fscanf returns EOF, 0: read failed
+	if (!(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &dummy[2], &dummy[3], &dummy[4], &dummy[5], &dummy[6]) >0 )){
+		printf("scanning CSM density profile failed..\n");
+		exit(EXIT_FAILURE);	
+	}
 
 	fclose(fp);
 	return dummy[2];
@@ -227,7 +232,10 @@ double func_M_csm(double r, double t)
 		}
 		printf("%s\n", filename);
 		for(i = 0; i < 3; i++){
-			fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[i], &dammy[2], &rho_c[i], &dammy[3], &dammy[4]);
+			if (!(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[i], &dammy[2], &rho_c[i], &dammy[3], &dammy[4]) >0 )){
+				printf("scanning CSM density profile failed..\n");
+				exit(EXIT_FAILURE);	
+			}
 		}
 		s = pdt.s;
 		fclose(fp);
@@ -290,7 +298,10 @@ void interp_self_similar_values(double *A, double *E_rev, double *E_for)
 {
 	FILE *fp;
 	fp = fopen("LCFiles/interp_self_similar_values.txt", "r");
-	fscanf(fp, "%lf %lf %lf", A, E_rev, E_for);
+	if (!(fscanf(fp, "%lf %lf %lf", A, E_rev, E_for) >0 )){
+		printf("scanning self similar solution file failed..\n");
+		exit(EXIT_FAILURE);	
+	}
 	fclose(fp);
 }
 
@@ -306,7 +317,10 @@ void set_abundance(void)
 		printf("reading CSM file failed..\n");
 		exit(EXIT_FAILURE);
 	}
-	fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[0], &dammy[2], &rho_c[0], &dammy[3], &dammy[4]);
+	if (!(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[0], &dammy[2], &rho_c[0], &dammy[3], &dammy[4]) >0 )){
+		printf("scanning CSM density profile failed..\n");
+		exit(EXIT_FAILURE);	
+	}
 	X = dammy[3];
 	Y = dammy[4];
 //	gen_opacity_sc();
