@@ -68,7 +68,10 @@ double rho_csm(double r)
 		FILE *fp;
 		char filename[256];
 		fp = fopen(csm, "r");
-		fgets(filename, sizeof(filename), fp);
+		if (fgets(filename, sizeof filename, fp) == NULL) {
+			printf("reading CSM density profile failed..\n");
+			exit(EXIT_FAILURE);
+		}
 		while(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &r_c[i], &dummy[2], &rho_c[i], &dummy[3], &dummy[4]) != EOF){
 			i++;
 		}
@@ -99,7 +102,10 @@ double set_r_ini(const char *file_csm)
 	char filename[256];
 	double dummy[7];
 	fp = fopen(file_csm, "r");
-	fgets(filename, sizeof(filename), fp);
+	if (fgets(filename, sizeof filename, fp) == NULL) {
+		printf("reading CSM density profile failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &dummy[2], &dummy[3], &dummy[4], &dummy[5], &dummy[6]);
 
 	fclose(fp);
@@ -123,7 +129,10 @@ double set_r_diff(const char *file_csm)
 	dr = (double*)calloc(20000, sizeof(double));
 
 	fp = fopen(file_csm, "r");
-	fgets(filename, sizeof(filename), fp);
+	if (fgets(filename, sizeof filename, fp) == NULL) {
+		printf("reading CSM density profile failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	while(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &r[i], &dummy[3], &rho[i], &dummy[5], &dummy[6]) != EOF){
 		if(i != 0){
 			kappa = 0.2 * (1.+dummy[5]);
@@ -209,7 +218,10 @@ double func_M_csm(double r, double t)
 		FILE *fp;
 		char filename[256];
 		fp = fopen(csm, "r");
-		fgets(filename, sizeof(filename), fp);
+		if (fgets(filename, sizeof filename, fp) == NULL) {
+			printf("reading CSM density profile failed..\n");
+			exit(EXIT_FAILURE);
+		}
 		printf("%s\n", filename);
 		for(i = 0; i < 3; i++){
 			fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[i], &dammy[2], &rho_c[i], &dammy[3], &dammy[4]);
@@ -245,7 +257,10 @@ double v_wind(double r)
 		FILE *fp;
 		char filename[256];
 		fp = fopen(csm, "r");
-		fgets(filename, sizeof(filename), fp);
+		if (fgets(filename, sizeof filename, fp) == NULL) {
+			printf("reading CSM density profile failed..\n");
+			exit(EXIT_FAILURE);
+		}
 		while(fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dummy[0], &dummy[1], &r_c[i], &v_c[i], &dummy[2], &dummy[3], &dummy[4]) != EOF){
 			i++;
 		}
@@ -284,7 +299,10 @@ void set_abundance(void)
 	char filename[256];
 
 	fp = fopen(csm, "r");
-	fgets(filename, sizeof(filename), fp);
+	if (fgets(filename, sizeof filename, fp) == NULL) {
+		printf("reading CSM file failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf", &dammy[0], &dammy[1], &r_c[0], &dammy[2], &rho_c[0], &dammy[3], &dammy[4]);
 	X = dammy[3];
 	Y = dammy[4];

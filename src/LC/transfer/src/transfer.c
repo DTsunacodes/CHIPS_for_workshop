@@ -104,7 +104,10 @@ void rad_transfer_csm(double Eej, double Mej, double Mni, double nej, double del
 	sprintf(csm, "%s", file_csm);
 	sprintf(filename, "%s", file_inp);
 	fp = fopen(filename, "r");
-	fgets(buf, 256, fp);
+	if (fgets(buf, 256, fp) == NULL) {
+		printf("reading shock output file failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	set_abundance();
 
 	if(FLNU == 1) {

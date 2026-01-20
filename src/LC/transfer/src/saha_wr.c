@@ -113,7 +113,10 @@ void Saha_wr_U(double rho, double U, double *mu_outp, double *T_outp)
 	int i = 0, count = 0;
 
 	fp = fopen("input/abundance/abundance_for_tablegen.txt", "r");
-	fgets(buf, 256, fp);
+	if (fgets(buf, 256, fp) == NULL) {
+		printf("reading abundance file failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	while(fscanf(fp, "%s %lf", buf, X_dummy+i) != EOF){
 		i++;
 	}
@@ -262,7 +265,10 @@ void Saha_U(double rho, double U, double *mu, double *T)
 	int i = 0;
 
 	fp = fopen("input/abundance/abundance_for_tablegen.txt", "r");
-	fgets(buf, 256, fp);
+	if (fgets(buf, 256, fp) == NULL) {
+		printf("reading abundance file failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	while(fscanf(fp, "%s %lf", buf, X_dummy+i) != EOF){
 		i++;
 	}

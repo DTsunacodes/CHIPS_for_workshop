@@ -115,7 +115,10 @@ void set_tables(const char *openfile, double rho[], double U[], double mu[], int
 	else{
 //		printf("Opacity file \"%s\" was set.\n", filename);
 	}
-	fgets(buf, 256, fp);
+	if (fgets(buf, 256, fp) == NULL) {
+		printf("reading opacity file failed..\n");
+		exit(EXIT_FAILURE);
+	}
 	U[0] = atof(strtok(buf, " "));
 	i = 1;
 	while(1){
