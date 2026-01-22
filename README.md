@@ -25,7 +25,7 @@ For installation of mesa_reader, please see [here](https://docs.mesastar.org/en/
 ## Steps for running CHIPS:
 1. git clone this repository
 
-	`git clone https://github.com/DTsuna/CHIPS.git`
+	`git clone https://github.com/DTsunacodes/CHIPS_for_workshop.git`
 
 2. At the top directory, compile the scripts for the mass eruption and light curve.
 
